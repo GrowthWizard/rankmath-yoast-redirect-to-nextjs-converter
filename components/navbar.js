@@ -17,7 +17,7 @@ export default function Navbar () {
                             </Link>
                         </li>
                         <li>
-                            <a className="ease-linear transition-opacity hover:opacity-80" href="/github.com" title="Check Code on Github">Check out on GitHub</a>
+                            <a className="ease-linear transition-opacity hover:opacity-80" href="https://github.com/GrowthWizard/rankmath-yoast-redirect-to-nextjs-converter" title="Check Code on Github">Check out on GitHub</a>
                         </li>
                     </ul>
                 </div>
