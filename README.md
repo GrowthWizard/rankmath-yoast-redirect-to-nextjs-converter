@@ -1,0 +1,1 @@
+# rankmath-yoast-redirect-to-nextjs-converter
