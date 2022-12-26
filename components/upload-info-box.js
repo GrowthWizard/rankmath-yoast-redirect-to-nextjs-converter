@@ -1,6 +1,6 @@
 export default function UploadInfoBox({ CsvRows, CsvValues }) {
   return (
-    <div className="px-5 max-w-7xl mx-auto mb-7">
+    <div className="px-5 max-w-7xl mx-auto pb-16">
       <h2 className="text-2xl font-bold mb-4">Your Upload:</h2>
       <div className="p-4 max-h-60 overflow-y-auto border border-gray-400 rounded-xl">
         <table>

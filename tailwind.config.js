@@ -14,8 +14,8 @@ module.exports = {
         "1/2": "50%",
       },
       fontFamily: {
-        inter: ['"Inter", sans-serif'],
-        "space-mono": ['"Space Mono", monospace'],
+        "source-sans": ["'Source Sans Pro', sans-serif"],
+        "montserrat": ["'Montserrat', sans-serif;"],
       },
       colors: {
         white: "#fff",

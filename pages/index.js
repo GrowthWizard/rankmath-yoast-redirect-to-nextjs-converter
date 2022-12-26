@@ -3,8 +3,9 @@
  * Check Documentation: https://www.npmjs.com/package/papaparse
  */
 
-import Papa from "papaparse";
 import { useEffect, useState } from "react";
+import Head from "next/head";
+import Papa from "papaparse";
 import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 
@@ -24,6 +25,12 @@ const CopyButton = dynamic(
 );
 
 export default function Home() {
+  // State to store the users choice for which SEO Plugin he used for his redirects
+  const [wpPluginSelected, setWpPluginSelected] = useState(false);
+
+  // State to store the domain name of the users website
+  const [usersDomain, setUsersDomain] = useState(null);
+
   // State to store parsed data
   const [parsedCsvData, setParsedCsvData] = useState([]);
 
@@ -39,11 +46,15 @@ export default function Home() {
   // State to store the actual data for Statuscode [410]
   const [statusDeleted, setStatusDeleted] = useState([]);
 
+  // State to store the code which will be copied to the next.config.js by the user
   const [finalJson, setFinalJson] = useState(null);
+
+  // State to store what result the user want to see
+  const [output, setOutput] = useState("finalJson");
 
   useEffect(() => {
     if (parsedCsvData.length > 0) {
-      toast.success("CSV File has been uploaded!");
+      setTimeout(toast.success("CSV File has been uploaded!"), 1000);
     }
   }, [parsedCsvData]);
 
@@ -51,20 +62,106 @@ export default function Home() {
     setFinalJson(generateJsonOutput(redirects));
   }, [redirects, finalJson]);
 
+  useEffect(() => {
+
+    if (output === "upload" || output === "redirects" || output === "status-deleted" && redirects.length < 1) {
+      toast.error("Please upload a CSV file with redirects first!");
+    }
+
+    if (output === "finalJson" && redirects.length > 0) {
+      toast.success("Only show your converted redirects.");
+    }
+
+    if (output === "redirects" && redirects.length > 0) {
+      toast.success("Only 301 redirects will be shown!");
+    }
+
+    if (output === "status-deleted" && statusDeleted.length > 0) {
+      toast.success("Only 410 redirects will be shown!");
+    }
+
+    if (output === "upload" && redirects.length > 0) {
+      toast.success("This is the data from your csv file.");
+    }
+
+    if (redirects.length && statusDeleted.length < 1) {
+      toast.error("Please upload a CSV file with redirects first!");
+    }
+  }, [output]);
+
   function generateJsonOutput(redirects) {
     const jsonOutput = [];
-    jsonOutput.push(
-      redirects.map((d) => {
-        return { source: `/${d[1]}`, destination: `${d[3]}`, permanent: true };
-      })
-    );
-    let str = JSON.stringify(jsonOutput[0], null, "\t");
-    let strWithOutQuotes = str.replace(/"([^"]+)":/g, "$1:");
-    let json = `async redirects() { 
-        return ${strWithOutQuotes};
-      },`;
-    return json;
+    if (wpPluginSelected === "RankMath") {
+      jsonOutput.push(
+        redirects.map((d) => {
+          console.log(d);
+
+          // strip root domain from string
+          let destinationDomain = d[3].replace(usersDomain, "");
+          return {
+            source: `/${d[1]}`,
+            destination: `${destinationDomain}`,
+            permanent: true,
+          };
+        })
+      );
+    }
+
+    if (wpPluginSelected === "YoastSEO") {
+      jsonOutput.push(
+        redirects.map((d) => {
+          return { source: `${d[0]}`, destination: `${d[1]}`, permanent: true };
+        })
+      );
+    }
+
+    if (wpPluginSelected !== false) {
+      let str = JSON.stringify(jsonOutput[0], null, "\t");
+      //console.log(str);
+      // RankMath Improvement, remove Root Domain from String via regex, for tomorrow.
+      let strWithOutQuotes = str.replace(/"([^"]+)":/g, "$1:");
+
+      let json = `async redirects() { 
+          return ${strWithOutQuotes};
+        },`;
+      return json;
+    }
   }
+
+  const setWordPressPlugin = (event) => {
+    if (event.target.value === "rankmath") {
+      if (usersDomain === null) {
+        /*
+         * Prompt the user to enter his domain name, so we can filter the output correctly.
+         * RankMath adds the root domain to the destination url, which is unnecessary for our final next.js output
+         */
+
+        let domain;
+        domain = window.prompt(
+          "Please enter your domain name, so we can filter format your redirect output correctly.",
+          "https://example.com"
+        );
+
+        // RankMaths csv export has a trailing slash, which we need to remove, for our final output
+        if (usersDomain) {
+          if (domain.slice(-1) === "/") {
+            domain = domain.slice(0, -1);
+            console.log(domain);
+          }
+        }
+
+        setUsersDomain(domain);
+      }
+
+      toast.success("RankMath has been selected");
+      setWpPluginSelected("RankMath");
+    }
+
+    if (event.target.value === "yoast") {
+      toast.success("YoastSEO has been selected");
+      setWpPluginSelected("YoastSEO");
+    }
+  };
 
   const changeHandler = (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
@@ -84,15 +181,33 @@ export default function Home() {
         const redirects = [];
         const statusDeleted = [];
 
-        valuesArray.map((d) => {
-          if (d[4] === "301") {
-            redirects.push(d);
-          }
+        if (wpPluginSelected === "RankMath") {
+          valuesArray.map((d) => {
+            if (d[4] === "301") {
+              redirects.push(d);
+            }
 
-          if (d[4] === "410") {
-            statusDeleted.push(d);
-          }
-        });
+            if (d[4] === "410") {
+              statusDeleted.push(d);
+            }
+          });
+        }
+
+        if (wpPluginSelected === "YoastSEO") {
+          valuesArray.map((d) => {
+            if (d[2] === "301") {
+              redirects.push(d);
+            }
+
+            if (d[2] === "410") {
+              statusDeleted.push(d);
+            }
+          });
+        }
+
+        const sendError = () => {
+          toast.error("Error, please select your WordPress SEO Plugin");
+        };
 
         // Parsed Data Response in array format
         setParsedCsvData(results.data);
@@ -112,19 +227,94 @@ export default function Home() {
     });
   };
 
+  function showResult(e) {
+    switch (e.target.id) {
+      case "upload":
+        setOutput("upload");
+        break;
+      case "redirects":
+        setOutput("redirects");
+        break;
+      case "deleted":
+        setOutput("status-deleted");
+        break;
+      case "converted":
+        setOutput("finalJson");
+        break;
+      default:
+        console.log(
+          `Something went wrong, setting the output state: ${output}`
+        );
+    }
+  }
+
   return (
-    <div>
-      <MainHeader ChangeHandler={changeHandler} />
-      <UploadInfoBox CsvRows={csvRows} CsvValues={csvValues} />
-      <RedirectInfoBox
-        CsvRows={csvRows}
-        Redirects={redirects}
-        StatusDeleted={statusDeleted}
+    <div className="bg-dark text-white">
+      <Head>
+        <title>wpToNext - Convert WordPress Redirects to next.js</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          name="description"
+          content="Convert your WordPress Redirects from RankMath or YoastSEO to next.js Code"
+        />
+      </Head>
+      <MainHeader
+        ChangeHandler={changeHandler}
+        PluginSelected={wpPluginSelected}
+        SetWordPressPlugin={setWordPressPlugin}
       />
-      <ConvertedRedirects
-        FinalJson={finalJson}
-        GenerateJsonOutput={generateJsonOutput(redirects)}
-      />
+      <div
+        id="choose-output"
+        className="flex flex-wrap justify-between max-w-7xl mx-auto px-5 bg-dark border border-white p-6 rounded md:-mt-24"
+      >
+        <div
+          id="upload"
+          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
+          onClick={showResult}
+        >
+          Show your Upload
+        </div>
+        <div
+          id="redirects"
+          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
+          onClick={showResult}
+        >
+          Show 301 Redirects only
+        </div>
+        <div
+          id="deleted"
+          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
+          onClick={showResult}
+        >
+          Show 410 Redirects only
+        </div>
+        <div
+          id="converted"
+          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
+          onClick={showResult}
+        >
+          Show Converted Redirects
+        </div>
+      </div>
+      {csvRows.length && csvValues.length > 0 && output === "upload" ? (
+        <UploadInfoBox CsvRows={csvRows} CsvValues={csvValues} />
+      ) : null}
+
+      {output == "redirects" || output == "status-deleted" ? (
+        <RedirectInfoBox
+          CsvRows={csvRows}
+          Redirects={redirects}
+          StatusDeleted={statusDeleted}
+        />
+      ) : null}
+
+      {output === "finalJson" ? (
+        <ConvertedRedirects
+          FinalJson={finalJson}
+          GenerateJsonOutput={generateJsonOutput(redirects)}
+        />
+      ) : null}
     </div>
   );
 }
