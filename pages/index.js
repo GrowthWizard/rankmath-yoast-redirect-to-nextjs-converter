@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 
 // import Components
 import MainHeader from "../components/main-header";
+import ChooseOutputBtns from "../components/choose-output-btns";
 import UploadInfoBox from "../components/upload-info-box";
 import RedirectInfoBox from "../components/redirect-info-box";
 import ConvertedRedirects from "../components/converted-redirects";
@@ -48,6 +49,9 @@ export default function Home() {
 
   // State to store the code which will be copied to the next.config.js by the user
   const [finalJson, setFinalJson] = useState(null);
+
+  // State to hide or show the finalJson Output Form
+  const [showFinalJson, setShowFinalJson] = useState(false);
 
   // State to store what result the user want to see
   const [output, setOutput] = useState("finalJson");
@@ -90,7 +94,10 @@ export default function Home() {
   }, [output]);
 
   function generateJsonOutput(redirects) {
-    const jsonOutput = [];
+    if (redirects.length < 1) {
+      return "Your final json output for your next.js file will be shown here.\n In Order to use the tool, please export your redirects from your WordPress SEO Plugin and upload the .csv file first.";
+    } else {
+      const jsonOutput = [];
     if (wpPluginSelected === "RankMath") {
       jsonOutput.push(
         redirects.map((d) => {
@@ -126,6 +133,8 @@ export default function Home() {
         },`;
       return json;
     }
+    }
+    
   }
 
   const setWordPressPlugin = (event) => {
@@ -223,7 +232,9 @@ export default function Home() {
 
         // Set filtered Status Deleted
         setStatusDeleted(statusDeleted);
+
       },
+
     });
   };
 
@@ -264,55 +275,26 @@ export default function Home() {
         PluginSelected={wpPluginSelected}
         SetWordPressPlugin={setWordPressPlugin}
       />
-      <div
-        id="choose-output"
-        className="flex flex-wrap justify-between max-w-7xl mx-auto px-5 bg-dark border border-white p-6 rounded md:-mt-24"
-      >
-        <div
-          id="upload"
-          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
-          onClick={showResult}
-        >
-          Show your Upload
-        </div>
-        <div
-          id="redirects"
-          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
-          onClick={showResult}
-        >
-          Show 301 Redirects only
-        </div>
-        <div
-          id="deleted"
-          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
-          onClick={showResult}
-        >
-          Show 410 Redirects only
-        </div>
-        <div
-          id="converted"
-          className="font-source-sans text-white text-center bg-rosa py-4 px-6 rounded-md min-w-[22%] transition-colors ease-linear hover:bg-dark hover:border border-white"
-          onClick={showResult}
-        >
-          Show Converted Redirects
-        </div>
-      </div>
+      <ChooseOutputBtns ShowResult={showResult} />
       {csvRows.length && csvValues.length > 0 && output === "upload" ? (
         <UploadInfoBox CsvRows={csvRows} CsvValues={csvValues} />
       ) : null}
 
-      {output == "redirects" || output == "status-deleted" ? (
+      {(output == "redirects" || output == "status-deleted") && redirects.length > 0 ? (
         <RedirectInfoBox
           CsvRows={csvRows}
           Redirects={redirects}
           StatusDeleted={statusDeleted}
+          Output={output}
         />
       ) : null}
 
       {output === "finalJson" ? (
         <ConvertedRedirects
           FinalJson={finalJson}
-          GenerateJsonOutput={generateJsonOutput(redirects)}
+          showFinalJson={showFinalJson}
+          GenerateJsonOutput={generateJsonOutput(redirects)
+          }
         />
       ) : null}
     </div>

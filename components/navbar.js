@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
 
 export default function Navbar() {
@@ -47,9 +46,9 @@ export default function Navbar() {
               className="flex flex-col justify-between w-8 h-5 rounded-lg p-0.5"
               aria-hidden="true"
             >
-              <span id="bar" className="h-0.5 w-full bg-black"></span>
-              <span id="bar" className="h-0.5 w-full bg-black"></span>
-              <span id="bar" className="h-0.5 w-full bg-black"></span>
+              <span id="bar" className="h-0.5 w-full bg-white"></span>
+              <span id="bar" className="h-0.5 w-full bg-white"></span>
+              <span id="bar" className="h-0.5 w-full bg-white"></span>
             </div>
           </button>
           <div
