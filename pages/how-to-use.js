@@ -23,14 +23,27 @@ export default function howtouse() {
               How to use wpToNext
             </h1>
             <p className="font-montserrat text-white">
-              This simple and free tool was build, for website owners which decided to migrate their WordPress Websites to next.js or using next.js + WordPress together.
-              If you want to setup redirects in next.js, you need to put your redirects into your next.config.js file. This is a bit tricky, because you need to write the redirects in a specific way. 
-              And it would take forever if you write them all by yourself. That's why I created wpToNext to convert your WordPress redirects to next.js in seconds. For further information, please check out the video below.
+              This simple and free tool was build, for website owners which
+              decided to migrate their WordPress Websites to next.js or using
+              next.js + WordPress together. If you want to setup redirects in
+              next.js, you need to put your redirects into your next.config.js
+              file. This is a bit tricky, because you need to write the
+              redirects in a specific way. And it would take forever if you
+              write them all by yourself. That's why I created wpToNext to
+              convert your WordPress redirects to next.js in seconds. For
+              further information, please check out the video below.
             </p>
           </div>
           <div className="w-full md:max-w-1/2">
-            <Image src="/images/dummy_700x400.png" width={700} height={400} />
-            <span className="font-montserrat font-light text-white text-sm text-center">Tutorial is coming up soon!</span>
+            <Image
+              src="/images/dummy_700x400.png"
+              width={700}
+              height={400}
+              loading="eager"
+            />
+            <span className="font-montserrat font-light text-white text-sm text-center">
+              Tutorial is coming up soon!
+            </span>
           </div>
         </div>
       </div>
@@ -50,11 +63,13 @@ export default function howtouse() {
                   engines that our content or a url has moved to a new location.
                   This is important, because you want to transfer all that trust
                   you build with that url, or backlinks still pointing to this
-                  url, to your website as well. <span className="bg-rosa">
+                  url, to your website as well.{" "}
+                  <span className="bg-rosa">
                     Otherwise loss in traffic or rankings can occur.
-                  </span></p>
-        
-                  <p className="font-montserrat text-white mb-4">
+                  </span>
+                </p>
+
+                <p className="font-montserrat text-white mb-4">
                   Just put yourself into the position of a webcrawler. Someone
                   told you in the past your content can be found on another url
                   and suddenly this redirect is gone. Maybe there is a third
@@ -63,10 +78,13 @@ export default function howtouse() {
                   or frustrated. That's why it's important to bring your
                   redirects with you.
                 </p>
-                <a href="https://www.searchenginejournal.com/ranking-factors/301-redirects/" title="Search Engine Journal about 301 redirects">
-                <div className="font-source-sans text-white text-center bg-rosa py-4 px-6 mb-2 rounded-md min-w-full transition-colors ease-linear hover:bg-dark hover:border border-white md:min-w-[22%] md:mb-0">
-                  Learn more about how Google handles redirects
-                </div>
+                <a
+                  href="https://www.searchenginejournal.com/ranking-factors/301-redirects/"
+                  title="Search Engine Journal about 301 redirects"
+                >
+                  <div className="font-source-sans text-white text-center bg-rosa py-4 px-6 mb-2 rounded-md min-w-full transition-colors ease-linear hover:bg-dark hover:border border-white md:min-w-[22%] md:mb-0">
+                    Learn more about how Google handles redirects
+                  </div>
                 </a>
               </div>
             </div>
@@ -89,9 +107,12 @@ export default function howtouse() {
               </div>
               <div className="bg-dark-purple md:max-w-1/2 md:bg-dark order-2 border-0 md:border md:border-white rounded-lg p-5 md:p-16 md:z-10">
                 <p className="font-montserrat text-white">
-                  Yoast SEO and RankMath are the two most popular solutions for optimizing your WordPress Website for search engines. 
-                  Both are free. Both offer a the same of functionality. But which one is better? But don't worry, Im here to help you decide. That's
-                  why I wrote this comprehensive guide to help you decide which SEO Plugin might be the best option for you.
+                  Yoast SEO and RankMath are the two most popular solutions for
+                  optimizing your WordPress Website for search engines. Both are
+                  free. Both offer a the same of functionality. But which one is
+                  better? But don't worry, Im here to help you decide. That's
+                  why I wrote this comprehensive guide to help you decide which
+                  SEO Plugin might be the best option for you.
                 </p>
               </div>
             </div>
