@@ -67,8 +67,11 @@ export default function Home() {
   }, [redirects, finalJson]);
 
   useEffect(() => {
-
-    if (output === "upload" || output === "redirects" || output === "status-deleted" && redirects.length < 1) {
+    if (
+      output === "upload" ||
+      output === "redirects" ||
+      (output === "status-deleted" && redirects.length < 1)
+    ) {
       toast.error("Please upload a CSV file with redirects first!");
     }
 
@@ -98,43 +101,46 @@ export default function Home() {
       return "Your final json output for your next.js file will be shown here.\n In Order to use the tool, please export your redirects from your WordPress SEO Plugin and upload the .csv file first.";
     } else {
       const jsonOutput = [];
-    if (wpPluginSelected === "RankMath") {
-      jsonOutput.push(
-        redirects.map((d) => {
-          console.log(d);
+      if (wpPluginSelected === "RankMath") {
+        jsonOutput.push(
+          redirects.map((d) => {
+            console.log(d);
 
-          // strip root domain from string
-          let destinationDomain = d[3].replace(usersDomain, "");
-          return {
-            source: `/${d[1]}`,
-            destination: `${destinationDomain}`,
-            permanent: true,
-          };
-        })
-      );
-    }
+            // strip root domain from string
+            let destinationDomain = d[3].replace(usersDomain, "");
+            return {
+              source: `/${d[1]}`,
+              destination: `${destinationDomain}`,
+              permanent: true,
+            };
+          })
+        );
+      }
 
-    if (wpPluginSelected === "YoastSEO") {
-      jsonOutput.push(
-        redirects.map((d) => {
-          return { source: `${d[0]}`, destination: `${d[1]}`, permanent: true };
-        })
-      );
-    }
+      if (wpPluginSelected === "YoastSEO") {
+        jsonOutput.push(
+          redirects.map((d) => {
+            return {
+              source: `${d[0]}`,
+              destination: `${d[1]}`,
+              permanent: true,
+            };
+          })
+        );
+      }
 
-    if (wpPluginSelected !== false) {
-      let str = JSON.stringify(jsonOutput[0], null, "\t");
-      //console.log(str);
-      // RankMath Improvement, remove Root Domain from String via regex, for tomorrow.
-      let strWithOutQuotes = str.replace(/"([^"]+)":/g, "$1:");
+      if (wpPluginSelected !== false) {
+        let str = JSON.stringify(jsonOutput[0], null, "\t");
+        //console.log(str);
+        // RankMath Improvement, remove Root Domain from String via regex, for tomorrow.
+        let strWithOutQuotes = str.replace(/"([^"]+)":/g, "$1:");
 
-      let json = `async redirects() { 
+        let json = `async redirects() { 
           return ${strWithOutQuotes};
         },`;
-      return json;
+        return json;
+      }
     }
-    }
-    
   }
 
   const setWordPressPlugin = (event) => {
@@ -232,9 +238,7 @@ export default function Home() {
 
         // Set filtered Status Deleted
         setStatusDeleted(statusDeleted);
-
       },
-
     });
   };
 
@@ -280,7 +284,8 @@ export default function Home() {
         <UploadInfoBox CsvRows={csvRows} CsvValues={csvValues} />
       ) : null}
 
-      {(output == "redirects" || output == "status-deleted") && redirects.length > 0 ? (
+      {(output == "redirects" || output == "status-deleted") &&
+      redirects.length > 0 ? (
         <RedirectInfoBox
           CsvRows={csvRows}
           Redirects={redirects}
@@ -293,8 +298,7 @@ export default function Home() {
         <ConvertedRedirects
           FinalJson={finalJson}
           showFinalJson={showFinalJson}
-          GenerateJsonOutput={generateJsonOutput(redirects)
-          }
+          GenerateJsonOutput={generateJsonOutput(redirects)}
         />
       ) : null}
     </div>

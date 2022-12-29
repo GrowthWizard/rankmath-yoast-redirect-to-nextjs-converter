@@ -55,10 +55,10 @@ export default function Navbar() {
             id="navbar-default"
             className={`${isOpen} w-full md:block md:w-auto`}
           >
-            <ul className="flex flex-col p-4 gap-2 text-white border-gray-100 md:flex-row md:space-x-5 md:mt-0 md:border-0 md:bg-transparent">
+            <ul className="flex flex-col p-4 gap-2 font-montserrat text-white border-gray-100 md:flex-row md:space-x-5 md:mt-0 md:border-0 md:bg-transparent">
               <li>
                 <Link
-                  href="/howtouse"
+                  href="/how-to-use"
                   className="ease-linear transition-opacity hover:opacity-80"
                 >
                   How to use
@@ -71,6 +71,15 @@ export default function Navbar() {
                   title="Check Code on Github"
                 >
                   Check out on GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  className="ease-linear transition-opacity hover:opacity-80"
+                  href="mailto:hello@steindominik.de"
+                  title="Contact Dominik Stein"
+                >
+                  Contact me
                 </a>
               </li>
             </ul>
