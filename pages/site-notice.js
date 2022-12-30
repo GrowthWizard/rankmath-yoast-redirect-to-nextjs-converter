@@ -1,5 +1,13 @@
+import Head from "next/head";
 export default function SiteNotice() {
     return (
+        <div>
+        <Head>
+            <title>Site Notice | WPtoNext</title>
+            <meta charSet="utf-8" />
+            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="robots" content="noindex" />
+        </Head>
         <article className="bg-dark">
             <main className="max-w-7xl mx-auto text-white py-7 px-5 md:py-16">
                 <h1 className="font-source-sans text-4xl mb-5">Site Notice</h1>
@@ -29,5 +37,6 @@ export default function SiteNotice() {
                 <p className="font-montserrat mb-5">We are not willing or obliged to participate in dispute resolution proceedings in front of a consumer arbitration board.</p>
             </main>
         </article>
+        </div>
     )
 }

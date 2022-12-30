@@ -271,7 +271,7 @@ export default function Home() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
-          content="Convert your WordPress Redirects from RankMath or YoastSEO to next.js Code"
+          content="Effortlessly convert WordPress redirects to your next.js application with our simple tool. Designed specifically for YoastSEO and RankMath Plugin users."
         />
       </Head>
       <MainHeader
