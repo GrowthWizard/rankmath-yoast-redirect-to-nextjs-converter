@@ -104,7 +104,6 @@ export default function Home() {
       if (wpPluginSelected === "RankMath") {
         jsonOutput.push(
           redirects.map((d) => {
-            console.log(d);
 
             // strip root domain from string
             let destinationDomain = d[3].replace(usersDomain, "");
@@ -131,8 +130,6 @@ export default function Home() {
 
       if (wpPluginSelected !== false) {
         let str = JSON.stringify(jsonOutput[0], null, "\t");
-        //console.log(str);
-        // RankMath Improvement, remove Root Domain from String via regex, for tomorrow.
         let strWithOutQuotes = str.replace(/"([^"]+)":/g, "$1:");
 
         let json = `async redirects() { 
@@ -161,7 +158,6 @@ export default function Home() {
         if (usersDomain) {
           if (domain.slice(-1) === "/") {
             domain = domain.slice(0, -1);
-            console.log(domain);
           }
         }
 
