@@ -59,7 +59,7 @@ export default function howtouse() {
                   engines that our content or a url has moved to a new location.
                   This is important, because you want to transfer all that trust
                   you build with that url, or backlinks still pointing to this
-                  url, to your website as well.{" "}
+                  url, to your website as well.
                   <span className="bg-rosa">
                     Otherwise loss in traffic or rankings can occur.
                   </span>

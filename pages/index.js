@@ -41,8 +41,11 @@ export default function Home() {
   //State to store the values
   const [csvValues, setCsvValues] = useState([]);
 
-  // State to store the actual data for the redirects [301, 302 307, 308]
+  // State to store the actual data for the redirects [301, 308]
   const [redirects, setRedirects] = useState([]);
+
+  // State to store the temporary redirects [302, 307]
+  const [temporaryRedirects, setTemporaryRedirects] = useState([]);
 
   // State to store the actual data for Statuscode [410]
   const [statusDeleted, setStatusDeleted] = useState([]);
@@ -100,7 +103,13 @@ export default function Home() {
     if (redirects.length < 1) {
       return "Your final json output for your next.js file will be shown here.\n In Order to use the tool, please export your redirects from your WordPress SEO Plugin and upload the .csv file first.";
     } else {
-      const jsonOutput = [];
+
+      // jsonOutput will be later reassigned to concat 2 arrays (temporaryRedirects and redirects)
+      let jsonOutput = [];
+
+      /*
+      * If the user chooses RankMath, we need to map through all permanent redirects and push the converted json to the jsonOutput array
+      */
       if (wpPluginSelected === "RankMath") {
         jsonOutput.push(
           redirects.map((d) => {
@@ -114,6 +123,25 @@ export default function Home() {
             };
           })
         );
+
+      /*
+      * Now we need to create a new array for all temporary Redirects, which we can later concat with the final jsonOutput array.
+      */
+        const temporaryRedirectsProcessed = temporaryRedirects.map((d) => {
+
+          // strip root domain from string
+          let destinationDomain = d[3].replace(usersDomain, "");
+          return {
+            source: `/${d[1]}`,
+            destination: `${destinationDomain}`,
+            permanent: false,
+          };
+        });
+
+        // concat the permanent redirects with the temporary redirects
+        jsonOutput = jsonOutput[0].concat(temporaryRedirectsProcessed);
+  
+
       }
 
       if (wpPluginSelected === "YoastSEO") {
@@ -126,10 +154,22 @@ export default function Home() {
             };
           })
         );
+
+        const temporaryRedirectsProcessed = temporaryRedirects.map((d) => {
+          return {
+            source: `${d[0]}`,
+            destination: `${d[1]}`,
+            permanent: false,
+          };
+        })
+        
+        // concat the permanent redirects with the temporary redirects
+        jsonOutput = jsonOutput[0].concat(temporaryRedirectsProcessed);
+
       }
 
       if (wpPluginSelected !== false) {
-        let str = JSON.stringify(jsonOutput[0], null, "\t");
+        let str = JSON.stringify(jsonOutput, null, "\t");
         let strWithOutQuotes = str.replace(/"([^"]+)":/g, "$1:");
 
         let json = `async redirects() { 
@@ -190,12 +230,17 @@ export default function Home() {
         });
 
         const redirects = [];
+        const temporaryRedirects = [];
         const statusDeleted = [];
 
         if (wpPluginSelected === "RankMath") {
           valuesArray.map((d) => {
             if (d[4] === "301") {
               redirects.push(d);
+            }
+
+             if (d[4] === "307") {
+              temporaryRedirects.push(d);
             }
 
             if (d[4] === "410") {
@@ -208,6 +253,10 @@ export default function Home() {
           valuesArray.map((d) => {
             if (d[2] === "301") {
               redirects.push(d);
+            }
+
+            if (d[2] === "307") {
+              temporaryRedirects.push(d);
             }
 
             if (d[2] === "410") {
@@ -229,8 +278,11 @@ export default function Home() {
         // Filtered Values
         setCsvValues(valuesArray);
 
-        // Set filtered Redirects
+        // Set filtered Permanent Redirects
         setRedirects(redirects);
+
+        // Set filtered Temporary Redirects
+        setTemporaryRedirects(temporaryRedirects);
 
         // Set filtered Status Deleted
         setStatusDeleted(statusDeleted);

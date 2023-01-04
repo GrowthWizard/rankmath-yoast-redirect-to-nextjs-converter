@@ -61,8 +61,7 @@ export default function MainHeader({
               Step 1: Choose your SEO Plugin!
             </h2>
             <p className="font-source-sans text-sm mb-2">
-              <b>Hint:</b> Statuscode 307 and Regex Redirects are currently not
-              supported.
+              <b>Hint:</b> Currently this tool can't convert (<a className="italic underline text-rosa ease-linear transition-colors hover:bg-rosa hover:text-white" href="https://yoast.com/help/what-are-regex-redirects/" title="example for regex rules">regex rules</a>) from your wordpress plugin. Also please upload a .csv file.
             </p>
             <PluginChoice SetWordPressPlugin={SetWordPressPlugin} />
             <h2 className="font-montserrat text-lg font-bold md:text-xl">
