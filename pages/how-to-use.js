@@ -31,14 +31,9 @@ export default function howtouse() {
             </p>
           </div>
           <div className="w-full md:max-w-1/2">
-            <Image
-              src="/images/dummy_700x400.png"
-              width={700}
-              height={400}
-              loading="eager"
-            />
+            <iframe width="100%" height="400" src="https://www.youtube-nocookie.com/embed/9_ptBKJ5KJE" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             <span className="font-montserrat font-light text-white text-sm text-center">
-              Tutorial is coming up soon!
+              Also learn why you should migrate your WordPress redirects to next.js
             </span>
           </div>
         </div>
@@ -49,9 +44,10 @@ export default function howtouse() {
           <div className="bg-dark-purple min-w-full border border-white rounded-lg py-4 mb-4 md:py-10 md:mb-10">
             <div className="flex flex-wrap gap-5 items-center p-5 md:p-30">
               <div className="md:max-w-[40%]">
-                <h2 className="font-source-sans font-bold text-4xl text-white">
+                <h2 className="font-source-sans font-bold text-4xl text-white mb-5">
                   Why should you migrate your WordPress redirects to next.js?
                 </h2>
+                <iframe width="100%" height="200" src="https://www.youtube.com/embed/W7MlcVgpops" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               </div>
               <div className="md:max-w-[55%]">
                 <p className="font-montserrat text-white mb-4">
