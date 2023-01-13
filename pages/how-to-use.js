@@ -47,7 +47,7 @@ export default function howtouse() {
                 <h2 className="font-source-sans font-bold text-4xl text-white mb-5">
                   Why should you migrate your WordPress redirects to next.js?
                 </h2>
-                <iframe width="100%" height="200" src="https://www.youtube.com/embed/W7MlcVgpops" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe width="100%" height="200" src="https://www.youtube-nocookie.com/embed/W7MlcVgpops" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               </div>
               <div className="md:max-w-[55%]">
                 <p className="font-montserrat text-white mb-4">
