@@ -32,9 +32,9 @@ export default function howtouse() {
           </div>
           <div className="w-full md:max-w-1/2">
             <iframe width="100%" height="400" src="https://www.youtube-nocookie.com/embed/9_ptBKJ5KJE" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            <span className="font-montserrat font-light text-white text-sm text-center">
-              Also learn why you should migrate your WordPress redirects to next.js
-            </span>
+            <a href="https://nextjs.org/docs/api-reference/next.config.js/redirects" target="_blank" rel="noopener norefferer" className="font-montserrat font-light text-white text-sm text-center">
+              Learn more about next.js redirects in the official documentation
+            </a>
           </div>
         </div>
       </div>
